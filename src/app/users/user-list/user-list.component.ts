@@ -56,13 +56,18 @@ export class UserListComponent implements OnInit {
     this.userServive.users$.subscribe((users) => (this.users = users));
   }
 
-  addUser() {
-    const newUser: User = {
-      firstName: 'New123',
-      lastName: 'User123',
-      userName: 'newuser123',
-      password: '123456789',
-    };
-    this.userServive.addUser(newUser);
+  // addUser() {
+  //   const newUser: User = {
+  //     firstName: 'New123',
+  //     lastName: 'User123',
+  //     userName: 'newuser123',
+  //     password: '123456789',
+  //   };
+  //   this.userServive.addUser(newUser);
+  // }
+
+  deleteUser(id: number | undefined) {
+    this.userServive.deleteUser(id);
+    alert('Delete user successfully');
   }
 }
