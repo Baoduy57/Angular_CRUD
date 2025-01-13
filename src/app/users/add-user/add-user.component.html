@@ -1,0 +1,118 @@
+<div class="flex flex-col gap-8">
+  <h1 class="text-4xl font-bold">Add new user</h1>
+  <div>
+    <form
+      [formGroup]="addForm"
+      (ngSubmit)="onSubimt()"
+      class="flex flex-col gap-5"
+    >
+      <div class="flex flex-col gap-3">
+        <label for="firstName">First Name</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="firstName"
+          placeholder="Enter First Name"
+          formControlName="firstName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('firstName')?.errors?.['required'] && addForm.controls['firstName'].touched)"
+        >
+          <p>First Name is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label for="lastName">Last Name</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="lastName"
+          placeholder="Enter Last Name"
+          formControlName="lastName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('lastName')?.errors?.['required'] && addForm.controls['lastName'].touched)"
+        >
+          <p>Last Name is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label for="userName">UserName</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="userName"
+          placeholder="Enter UserName"
+          formControlName="userName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('userName')?.errors?.['required'] && addForm.controls['userName'].touched)"
+        >
+          <p>UserName is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label for="password">Password</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="password"
+          id="password"
+          placeholder="Enter Password"
+          formControlName="password"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('password')?.errors?.['required'] && addForm.controls['password'].touched)"
+        >
+          <p>Password is required!</p>
+        </div>
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('password')?.errors?.['minlength'] && addForm.controls['password'].dirty)"
+        >
+          <p>The password must be at least 6 characters!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="password"
+          id="confirmPassword"
+          placeholder="Enter Confirm Password"
+          formControlName="confirmPassword"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('confirmPassword')?.errors?.['required'] && addForm.controls['confirmPassword'].touched)"
+        >
+          <p>Confirm Password is required!</p>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-center">
+        <button
+          [disabled]="addForm.invalid"
+          [ngClass]="{ disabled: addForm.invalid }"
+          class="btn-submit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+          type="submit"
+        >
+          Add User
+        </button>
+
+        <a
+          routerLink="/users"
+          class="text-blue-500 hover:text-blue-600 underline underline-offset-2"
+          >Cancel</a
+        >
+      </div>
+    </form>
+  </div>
+</div>
