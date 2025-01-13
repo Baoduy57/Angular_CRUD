@@ -22,7 +22,9 @@
         <td>{{ user.userName }}</td>
         <td class="flex gap-4 justify-center">
           <button class="btn-edit">Edit</button>
-          <button class="btn-delete">Delete</button>
+          <button (click)="deleteUser(user.id)" class="btn-delete">
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>

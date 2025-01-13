@@ -47,6 +47,12 @@ export class UserService {
     this.updateToLocalStorage();
   }
 
+  deleteUser(id: number | undefined) {
+    const idx = this.users.findIndex((u) => u.id === id);
+    this.users.splice(idx, 1);
+    this.updateToLocalStorage();
+  }
+
   private updateData() {
     this.userSubject.next(this.users);
   }
