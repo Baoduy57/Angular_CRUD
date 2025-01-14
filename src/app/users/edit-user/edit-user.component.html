@@ -1,0 +1,127 @@
+<div class="flex flex-col gap-8">
+  <h1 class="text-4xl font-bold">Edit user</h1>
+  <div>
+    <form
+      [formGroup]="editForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-5"
+    >
+      <div class="flex flex-col gap-3">
+        <label class="text-base font-bold" for="firstName">First Name</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="firstName"
+          placeholder="Enter First Name"
+          formControlName="firstName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('firstName')?.errors?.['required'] && editForm.controls['firstName'].touched)"
+        >
+          <p>First Name is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label class="text-base font-bold" for="lastName">Last Name</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="lastName"
+          placeholder="Enter Last Name"
+          formControlName="lastName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('lastName')?.errors?.['required'] && editForm.controls['lastName'].touched)"
+        >
+          <p>Last Name is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label class="text-base font-bold" for="userName">UserName</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="text"
+          id="userName"
+          placeholder="Enter UserName"
+          formControlName="userName"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('userName')?.errors?.['required'] && editForm.controls['userName'].touched)"
+        >
+          <p>UserName is required!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label class="text-base font-bold" for="password">Password</label>
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="password"
+          id="password"
+          placeholder="Enter Password"
+          formControlName="password"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('password')?.errors?.['required'] && editForm.controls['password'].touched)"
+        >
+          <p>Password is required!</p>
+        </div>
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('password')?.errors?.['minlength'] && editForm.controls['password'].dirty)"
+        >
+          <p>The password must be at least 6 characters!</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <label class="text-base font-bold" for="confirmPassword"
+          >Confirm Password</label
+        >
+        <input
+          class="outline-none border border-slate-300 rounded-md px-4 py-2 focus:border-x-slate-500"
+          type="password"
+          id="confirmPassword"
+          placeholder="Enter Confirm Password"
+          formControlName="confirmPassword"
+        />
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(editForm.get('confirmPassword')?.errors?.['required'] && editForm.controls['confirmPassword'].touched)"
+        >
+          <p>Confirm Password is required!</p>
+        </div>
+      </div>
+
+      <div
+        class="text-base text-rose-500"
+        *ngIf="editForm.errors?.['passwordMismatch'] && editForm.touched"
+      >
+        <p>Passwords do not match!</p>
+      </div>
+
+      <div class="flex gap-8 items-center">
+        <button
+          [disabled]="editForm.invalid"
+          [ngClass]="{ disabled: editForm.invalid }"
+          class="btn-submit px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600"
+          type="submit"
+        >
+          Submit
+        </button>
+
+        <a
+          routerLink="/users"
+          class="text-blue-500 hover:text-blue-600 underline underline-offset-2"
+          >Cancel</a
+        >
+      </div>
+    </form>
+  </div>
+</div>

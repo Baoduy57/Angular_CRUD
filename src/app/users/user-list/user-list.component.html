@@ -21,7 +21,9 @@
         <td>{{ user.lastName }}</td>
         <td>{{ user.userName }}</td>
         <td class="flex gap-4 justify-center">
-          <button class="btn-edit">Edit</button>
+          <a [routerLink]="'edit-user/' + user.id"
+            ><button class="btn-edit">Edit</button></a
+          >
           <button (click)="deleteUser(user.id)" class="btn-delete">
             Delete
           </button>
