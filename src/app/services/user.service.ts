@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -50,6 +50,16 @@ export class UserService {
   deleteUser(id: number | undefined) {
     const idx = this.users.findIndex((u) => u.id === id);
     this.users.splice(idx, 1);
+    this.updateToLocalStorage();
+  }
+
+  getUserById(id: number): Observable<User | undefined> {
+    return of(this.users.find((u) => u.id === id));
+  }
+
+  updateUser(user: User) {
+    const idx = this.users.findIndex((u) => u.id === user.id);
+    this.users.splice(idx, 1, user);
     this.updateToLocalStorage();
   }
 

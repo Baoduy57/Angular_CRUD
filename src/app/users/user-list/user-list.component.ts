@@ -67,7 +67,9 @@ export class UserListComponent implements OnInit {
   // }
 
   deleteUser(id: number | undefined) {
-    this.userServive.deleteUser(id);
-    alert('Delete user successfully');
+    const isDelete = confirm('Do you want to delete this user?');
+    if (isDelete) {
+      this.userServive.deleteUser(id);
+    }
   }
 }
