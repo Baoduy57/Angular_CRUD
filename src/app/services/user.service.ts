@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,28 +16,42 @@ export class UserService {
     []
   );
 
-  users$: Observable<User[]> = this.userSubject.asObservable();
+  private currentUser!: User | null;
 
-  constructor(private localStorageService: LocalStorageService) {}
+  private currentUserSubject: BehaviorSubject<User | null> =
+    new BehaviorSubject<User | null>(null);
+
+  users$: Observable<User[]> = this.userSubject.asObservable();
+  currentUser$: Observable<User | null> =
+    this.currentUserSubject.asObservable();
+
+  constructor(
+    private localStorageService: LocalStorageService,
+    private router: Router
+  ) {}
 
   fetchDataFromLocalStorage() {
+    // this.localStorageService.setObject('currentUser', {});
     this.users =
       this.localStorageService.getValue<User[]>(UserService.UsersStorageKey) ||
       [];
+    this.currentUser =
+      this.localStorageService.getValue<User | null>('currentUser') || null;
     this.updateData();
   }
 
   updateToLocalStorage() {
     this.localStorageService.setObject(UserService.UsersStorageKey, this.users);
+    this.localStorageService.setObject('currentUser', this.currentUser);
     this.updateData();
   }
 
-  addUser(user: User): void {
+  addUser(user: User): boolean {
     const isHasUser = this.users.find((u) => u.userName === user.userName);
 
     if (isHasUser) {
       alert('Username is exiting!');
-      return;
+      return false;
     }
 
     // const newUser = user;
@@ -45,6 +60,8 @@ export class UserService {
 
     this.users.unshift(newUser);
     this.updateToLocalStorage();
+    alert('Add new user successfully');
+    return true;
   }
 
   deleteUser(id: number | undefined) {
@@ -63,7 +80,30 @@ export class UserService {
     this.updateToLocalStorage();
   }
 
+  login(userName: string, password: string) {
+    const user = this.users.find((u) => u.userName === userName);
+    if (!user) {
+      alert('User not found!');
+      return;
+    }
+    if (user.password !== password) {
+      alert('Incorrect password!');
+      return;
+    }
+    this.currentUser = user;
+    this.updateToLocalStorage();
+    this.router.navigate(['/home']);
+  }
+
+  logout() {
+    this.localStorageService.removeItem('currentUser');
+    this.currentUser = null;
+    this.currentUserSubject.next(null);
+    this.router.navigate(['account/login']);
+  }
+
   private updateData() {
     this.userSubject.next(this.users);
+    this.currentUserSubject.next(this.currentUser);
   }
 }

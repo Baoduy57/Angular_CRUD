@@ -55,6 +55,12 @@
         >
           <p>UserName is required!</p>
         </div>
+        <div
+          class="text-base text-rose-500"
+          *ngIf="(addForm.get('userName')?.errors?.['minlength'] && addForm.controls['userName'].dirty)"
+        >
+          <p>The username must be at least 6 characters!</p>
+        </div>
       </div>
 
       <div class="flex flex-col gap-3">
@@ -97,13 +103,12 @@
         >
           <p>Confirm Password is required!</p>
         </div>
-      </div>
-
-      <div
-        class="text-base text-rose-500"
-        *ngIf="addForm.errors?.['passwordMismatch'] && addForm.touched"
-      >
-        <p>Passwords do not match!</p>
+        <div
+          class="text-base text-rose-500"
+          *ngIf="addForm.errors?.['passwordMismatch'] && addForm.touched"
+        >
+          <p>Passwords do not match!</p>
+        </div>
       </div>
 
       <div class="flex gap-8 items-center">

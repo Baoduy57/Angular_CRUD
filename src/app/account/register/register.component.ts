@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { passwordMatchValidator } from './password-match.validator';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
-import { passwordMatchValidator } from './password-match.validator';
 
 @Component({
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.scss'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
 })
-export class AddUserComponent implements OnInit {
-  addForm!: FormGroup;
+export class RegisterComponent implements OnInit {
+  registerForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.addForm = this.fb.group(
+  ngOnInit() {
+    this.registerForm = this.fb.group(
       {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
@@ -29,29 +29,12 @@ export class AddUserComponent implements OnInit {
         ],
         confirmPassword: ['', Validators.required],
       },
-      { validators: passwordMatchValidator() } // Áp dụng custom validator
+      { validators: passwordMatchValidator() }
     );
   }
 
-  // onSubimt() {
-  //   const value = this.addForm.value;
-  //   if (value.password !== value.confirmPassword) {
-  //     alert('Password is not same!');
-  //     return;
-  //   }
-  //   const newUSer: User = {
-  //     firstName: value.firstName,
-  //     lastName: value.lastName,
-  //     userName: value.userName,
-  //     password: value.password,
-  //   };
-  //   this.userService.addUser(newUSer);
-  //   this.addForm.reset();
-  //   alert('Add new user successfully');
-  // }
-
-  onSubimt() {
-    const value = this.addForm.value;
+  onSubmit() {
+    const value = this.registerForm.value;
     const newUser: User = {
       firstName: value.firstName,
       lastName: value.lastName,
@@ -60,7 +43,7 @@ export class AddUserComponent implements OnInit {
     };
 
     if (this.userService.addUser(newUser)) {
-      this.addForm.reset();
+      this.registerForm.reset();
     }
   }
 }
