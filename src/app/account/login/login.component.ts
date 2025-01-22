@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,14 +11,15 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private userServive: UserService, private fb: FormBuilder) {}
+  constructor(
+    private userServive: UserService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      userName: [
-        '',
-        Validators.compose([Validators.required, Validators.minLength(6)]),
-      ],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
       password: [
         '',
         Validators.compose([Validators.required, Validators.minLength(6)]),
@@ -27,6 +29,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     const value = this.loginForm.value;
-    this.userServive.login(value.userName, value.password);
+    // this.userServive.login(value.userName, value.password);
+    this.userServive.login2(value.email, value.password).subscribe({
+      next: (res) => {
+        this.userServive.setCurrentUser(res.user);
+        this.userServive.updateToLocalStorage();
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.log(123);
+        alert(err.error.message);
+      },
+    });
   }
 }

@@ -55,7 +55,7 @@ export class AddUserComponent implements OnInit {
     const newUser: User = {
       firstName: value.firstName,
       lastName: value.lastName,
-      userName: value.userName,
+      email: value.email,
       password: value.password,
     };
 

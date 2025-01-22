@@ -27,7 +27,7 @@ export class EditUserComponent implements OnInit {
       {
         firstName: [this.user?.firstName, Validators.required],
         lastName: [this.user?.lastName, Validators.required],
-        userName: [this.user?.userName, Validators.required],
+        userName: [this.user?.email, Validators.required],
         password: [
           this.user?.password,
           Validators.compose([Validators.minLength(6)]),
@@ -46,7 +46,7 @@ export class EditUserComponent implements OnInit {
         id: this.user?.id,
         firstName: value.firstName,
         lastName: value.lastName,
-        userName: value.userName,
+        email: value.email,
         password: value.password === '' ? this.user?.password : value.password,
       };
       this.userService.updateUser(newUser);

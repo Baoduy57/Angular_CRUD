@@ -19,9 +19,9 @@ export class RegisterComponent implements OnInit {
       {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
-        userName: [
+        email: [
           '',
-          Validators.compose([Validators.required, Validators.minLength(6)]),
+          Validators.compose([Validators.required, Validators.email]),
         ],
         password: [
           '',
@@ -38,12 +38,22 @@ export class RegisterComponent implements OnInit {
     const newUser: User = {
       firstName: value.firstName,
       lastName: value.lastName,
-      userName: value.userName,
+      email: value.email,
       password: value.password,
     };
 
-    if (this.userService.addUser(newUser)) {
-      this.registerForm.reset();
-    }
+    this.userService.registerUser(newUser).subscribe({
+      next: (res) => {
+        alert('Register new user successfully');
+        this.registerForm.reset();
+      },
+      error: (err) => {
+        alert(err.error.message);
+      },
+    });
+
+    // if (this.userService.addUser(newUser)) {
+    //   this.registerForm.reset();
+    // }
   }
 }
