@@ -3,6 +3,8 @@ import { User } from '../models/user';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +29,8 @@ export class UserService {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   fetchDataFromLocalStorage() {
@@ -47,7 +50,7 @@ export class UserService {
   }
 
   addUser(user: User): boolean {
-    const isHasUser = this.users.find((u) => u.userName === user.userName);
+    const isHasUser = this.users.find((u) => u.email === user.email);
 
     if (isHasUser) {
       alert('Username is exiting!');
@@ -64,6 +67,37 @@ export class UserService {
     return true;
   }
 
+  registerUser(user: User): Observable<any> {
+    // TODO: implement
+    return this.http.post(`${environment.apiUrl}/auth/register`, user);
+  }
+
+  // login(userName: string, password: string) {
+  //   const user = this.users.find((u) => u.email === userName);
+  //   if (!user) {
+  //     alert('User not found!');
+  //     return;
+  //   }
+  //   if (user.password !== password) {
+  //     alert('Incorrect password!');
+  //     return;
+  //   }
+  //   this.currentUser = user;
+  //   this.updateToLocalStorage();
+  //   this.router.navigate(['/home']);
+  // }
+
+  setCurrentUser(user: User): void {
+    this.currentUser = user;
+  }
+
+  login2(email: string, password: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/auth/login`, {
+      email: email,
+      password: password,
+    });
+  }
+
   deleteUser(id: number | undefined) {
     const idx = this.users.findIndex((u) => u.id === id);
     this.users.splice(idx, 1);
@@ -78,21 +112,6 @@ export class UserService {
     const idx = this.users.findIndex((u) => u.id === user.id);
     this.users.splice(idx, 1, user);
     this.updateToLocalStorage();
-  }
-
-  login(userName: string, password: string) {
-    const user = this.users.find((u) => u.userName === userName);
-    if (!user) {
-      alert('User not found!');
-      return;
-    }
-    if (user.password !== password) {
-      alert('Incorrect password!');
-      return;
-    }
-    this.currentUser = user;
-    this.updateToLocalStorage();
-    this.router.navigate(['/home']);
   }
 
   logout() {
